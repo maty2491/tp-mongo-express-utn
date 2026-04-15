@@ -1,11 +1,16 @@
 import express from "express"
-import dotenv from "dotenv"
-import cors from "cors"
-import {connectDB} from "./src/config/db.js"
+import { PORT } from "./src/config/config.js"
+import { connectDB } from "./src/config/db.js"
+import productRouter from "./src/routes/productRoutes.js"
+const app = express()
 
-dotenv.config()
-
-app.use(cros())
 app.use(express.json())
+app.use(express.urlencoded({extended: true}))
 
 connectDB()
+
+app.use("/api/product", productRouter)
+
+app.listen(PORT, () =>{
+    console.log(`Server corriendo en puerto ${PORT}`)    
+})
