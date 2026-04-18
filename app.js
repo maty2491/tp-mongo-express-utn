@@ -9,7 +9,10 @@ app.use(express.urlencoded({extended: true}))
 
 connectDB()
 
+// Rutas
 app.use("/api/product", productRouter)
+
+
 
 app.listen(PORT, () =>{
     console.log(`Server corriendo en puerto ${PORT}`)    

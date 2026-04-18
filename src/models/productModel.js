@@ -42,12 +42,14 @@ const productSchema = new mongoose.Schema({
                 return statusEm.includes(value)
             },
             message: props => `${props.value} no es un estado válido`
-        }
+        },
+        default: statusEm[0]
     },
     //categoria
     category: String,
     //Destacados
     highlighted: Boolean,
+    
     // rango de ganancia
     profitRate:{
         type: Number,
