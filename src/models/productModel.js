@@ -46,7 +46,7 @@ const productSchema = new mongoose.Schema({
         default: statusEm[0]
     },
     //categoria
-    category: String,
+    category: { type: mongoose.Schema.Types.ObjectId, ref: "category", default: null},
     //Destacados
     highlighted: Boolean,
     
@@ -58,6 +58,8 @@ const productSchema = new mongoose.Schema({
     },
     //imagenes
     image: String
+},{
+    timestamps: true
 })
 
 productSchema.virtual("finalPrice").get(function () {

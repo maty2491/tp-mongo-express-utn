@@ -1,14 +1,10 @@
+import { checkModelExist } from "../helpers/checkExist.js"
 import Product from "../models/productModel.js"
 
 export const createProductService = async (productData) => {
-    // VALIDAR QUE EL PRODUCTO ES UNICO
-    const {name} = productData
-    const productExist = await Product.findOne({name})
-    if(productExist){
-        const error = new Error(`El producto ${name}, ya existe`)
-        error.statusCode = 400
-        throw error
-    }
+
+    await checkModelExist(Product, { name: productData.name }, false, 400, `Producto ${productData.name} ya existe`)
+    // VALIDAR QUE EL PRODUCTO ES UNICO    
     const newProduct = new Product(productData)
     const savedProduct = await newProduct.save()
     return savedProduct
@@ -16,35 +12,36 @@ export const createProductService = async (productData) => {
 
 export const getAllProductService = async () => {
     // TRAE TODOS LOS PRODUCTOS
-    const products =  await Product.find()    
+    const products = await Product.find().populate("category")
     return products
 }
 
-export const updateProductService = async (id, productData) =>{
-    const productExist = await Product.findOne({_id: id})
-    if(!productExist){
-        const error = new Error("No existe el producto")
-        error.statusCode = 404
-        throw error
-    }
+export const updateProductService = async (id, productData) => {
+   await checkModelExist(Product, { _id: id }, true, 404, `Producto no encontrado`)
+
+
     const updateProduct = await Product.findOneAndUpdate(
-        {_id: id},
+        { _id: id },
         productData,
-        {returnDocument: 'after'}
+        { returnDocument: 'after' }
     )
     return updateProduct
 }
 
-export const  deleteProductService = async (id) =>{
+export const deleteProductService = async (id) => {
+   await checkModelExist(Product, { _id: id }, true, 404, `Producto no encontrado`)
+
     const productExist = await Product.findById(id)
-    if(!productExist){
-        const error = new Error("No existe el producto")
-        error.statusCode = 404
-        throw error
-    }
 
     await Product.findByIdAndDelete(id)
     return {
         message: "Producto eliminado exitosamente"
     }
+}
+
+export const getProductByIdService = async (id) => {
+    
+    const product = await checkModelExist(Product, { _id: id }, true, 404, `Producto no encontrado`)
+
+    return product
 }

@@ -1,4 +1,5 @@
-import { createProductService, getAllProductService, updateProductService, deleteProductService } from "../services/productService.js"
+import { createProductService, getAllProductService, updateProductService, deleteProductService, getProductByIdService } from "../services/productService.js"
+import {handleError} from "../utils/errorHandler.js"
 
 export const createProduct = async (req, res) => {
     try {
@@ -8,10 +9,7 @@ export const createProduct = async (req, res) => {
         const savedProduct = await createProductService(productData)
         res.status(201).json(savedProduct)
     } catch (error) {
-        const statusCode = error.statusCode || 500
-        res.status(statusCode).json({
-            message: error.message || "Error de server interno"
-        })
+         handleError(error, res)
     }
 }
 
@@ -20,10 +18,17 @@ export const getAllProduct = async (req, res) => {
         const products = await getAllProductService()
         res.status(200).json(products)
     } catch (error) {
-        const statusCode = error.statusCode || 500
-        res.status(statusCode).json({
-            message: error.message || "Error de server interno"
-        })
+        handleError(error, res)
+    }
+}
+
+export const getProductById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const product = await getProductByIdService(id);
+        res.status(200).json(product);
+    } catch (error) {
+        handleError(error, res);
     }
 }
 
@@ -34,10 +39,7 @@ export const updateProduct = async (req, res) => {
         const updatedProduct = await updateProductService(id, productData)
         res.status(201).json(updatedProduct)
     } catch (error) {
-        const statusCode = error.statusCode || 500
-        res.status(statusCode).json({
-            message: error.message || "Error de server interno"
-        })
+         handleError(error, res)
     }
 }
 
@@ -47,9 +49,6 @@ export const deleteProduct = async (req, res) => {
         const result = await deleteProductService(id)
         res.status(201).json(result)
     } catch (error) {
-        const statusCode = error.statusCode || 500
-        res.status(statusCode).json({
-            message: error.message || "Error de server interno"
-        })
+        handleError(error, res)
     }
 }
