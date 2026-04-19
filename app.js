@@ -3,6 +3,7 @@ import { PORT } from "./src/config/config.js"
 import { connectDB } from "./src/config/db.js"
 import productRoute from "./src/routes/productRoutes.js"
 import categoryRoute from "./src/routes/categoryRoutes.js"
+import userRoute from "./src/routes/userRoutes.js"
 const app = express()
 
 app.use(express.json())
@@ -13,7 +14,7 @@ connectDB()
 // Rutas
 app.use("/api/product", productRoute)
 app.use("/api/category", categoryRoute)
-
+app.use("/api/user", userRoute)
 
 
 app.listen(PORT, () =>{
