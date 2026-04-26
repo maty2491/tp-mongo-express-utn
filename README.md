@@ -117,10 +117,10 @@ Las rutas están montadas con estos prefijos:
 
 ```json
 {
-  "name": "Lucia",
-  "lastName": "Martinez",
-  "email": "lucia@moda.com",
-  "password": "Moda123"
+  "name": "Matias",
+  "lastName": "Riera",
+  "email": "mriera@mail.com",
+  "password": "qQ1000!"
 }
 ```
 
@@ -130,8 +130,8 @@ Las rutas están montadas con estos prefijos:
 
 ```json
 {
-  "email": "lucia@moda.com",
-  "password": "Moda123"
+  "email": "mriera@mail.com",
+  "password": "qQ1000!"
 }
 ```
 
