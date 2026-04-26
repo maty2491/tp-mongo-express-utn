@@ -66,3 +66,17 @@ export const validateUser = async (req, res ) => {
         handleError(error, res)
     }
 }
+
+export const logout = async (req, res) => {
+    try {
+        if(req.session){
+            req.session.destroy()
+            res.clearCookie("connect.sid")
+        }
+        return res.status(200).json({
+            message: "Deslogueo exitoso"
+        })
+    } catch (error) {
+        handleError(error, res)
+    }
+}

@@ -2,12 +2,15 @@ import { checkModelExist } from "../helpers/checkExist.js"
 import Product from "../models/productModel.js"
 
 export const createProductService = async (productData) => {
-
     await checkModelExist(Product, { name: productData.name }, false, 400, `Producto ${productData.name} ya existe`)
-    // VALIDAR QUE EL PRODUCTO ES UNICO    
+    // VALIDAR QUE EL PRODUCTO ES UNICO
     const newProduct = new Product(productData)
     const savedProduct = await newProduct.save()
-    return savedProduct
+
+    return {
+        message: "Producto creado exitosamente",
+        data: savedProduct
+    }
 }
 
 export const getAllProductService = async () => {
@@ -19,19 +22,20 @@ export const getAllProductService = async () => {
 export const updateProductService = async (id, productData) => {
    await checkModelExist(Product, { _id: id }, true, 404, `Producto no encontrado`)
 
-
     const updateProduct = await Product.findOneAndUpdate(
         { _id: id },
         productData,
-        { returnDocument: 'after' }
+        { returnDocument: "after", runValidators: true }
     )
-    return updateProduct
+
+    return {
+        message: "Producto actualizado exitosamente",
+        data: updateProduct
+    }
 }
 
 export const deleteProductService = async (id) => {
    await checkModelExist(Product, { _id: id }, true, 404, `Producto no encontrado`)
-
-    const productExist = await Product.findById(id)
 
     await Product.findByIdAndDelete(id)
     return {
